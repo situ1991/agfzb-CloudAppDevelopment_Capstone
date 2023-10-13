@@ -15,11 +15,26 @@
 
     <body>
     <!-- Remove this line the first time you edit this file -->
-     This is the index page of your Django app!
     <!--Add a nav bar here -->
-
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Best Cars</a>
+            </div>
+            <ul class="nav navbar-nav navbar-right">                
+                <li>                    
+                    <a class="btn btn-link" href="{% url 'djangoapp:about' %}">About</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
     <!--Add a dealer table here -->
-
+    <footer class="bg-light text-center text-white">
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+            © 2023 Copyright:
+            <a class="text-white" href="{% url 'djangoapp:contact' %}">Contact Us</a>
+          </div>
+    </footer>
     </body>
 
 </html>
