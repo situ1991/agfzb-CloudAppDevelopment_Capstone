@@ -33,12 +33,12 @@ def contact(request):
 def login_request(request):
     context={}
     if(request.method=='POST'):
-        username= request['username']
-        password= request['pwd']
-        user= authenticate(username= username, password= username)
+        username= request.POST['username']
+        password= request.POST['psw']
+        user= authenticate(username= username, password= password)
         if user is not None:
             login(request,user)
-            return redirect('djangoapp/dealerdetails.html')
+            return redirect('djangoapp:index')
         else:
             return render(request,'djangoapp/login.html',context)
     else:
@@ -47,11 +47,41 @@ def login_request(request):
 
 
 # Create a `logout_request` view to handle sign out request
-# def logout_request(request):
-# ...
+def logout_request(request):
+   # Get the user object based on session id in request
+    print("Log out the user `{}`".format(request.user.username))
+    # Logout user in the request
+    logout(request)
+    # Redirect user back to course list view
+    return redirect('djangoapp:index')
+
 
 # Create a `registration_request` view to handle sign up request
 def registration_request(request):
+    context={}
+    if request.method=='GET':
+       return render(request,'djangoapp/registration.html', context)
+    elif request.method=='POST':
+        username= request.POST['username']
+        password=request.POST['password']
+        firstname=request.POST['firstname']
+        lastname=request.POST['lastname']
+        user_exist=False
+        try:
+            User.objects.get(username=username)
+            user_exist=True
+        except:
+            logger.debug('{} user already exist'.format(username))
+        if not user_exist:
+            user= User.objects.create_user(username=username, first_name=firstname, last_name=lastname, password= password)
+            login(request,user)
+            return redirect('djangoapp:index')
+        else:
+            return render(request,'djangoapp/registration.html', context)
+            
+
+
+
 
 
 # Update the `get_dealerships` view to render the index page with a list of dealerships

@@ -36,13 +36,43 @@
                             <input type="password" class="form-control" placeholder="Password" name="psw" >
                             <button class="btn btn-primary" type="submit">Login</button>                            
                         </div>
+                        <a class="btn btn-link" href="{% url 'djangoapp:registration' %}">Sign Up</a>
                     </form>
                 </li>
                 {% endif %}
             </ul>
         </div>
     </nav>
-    <!--Add a dealer table here -->
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Review</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>Very Nice </td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>Good !</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>Happy with The Service</td>
+          </tr>
+        </tbody>
+      </table>
     <footer class="bg-light text-center text-white">
         <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
             © 2023 Copyright:
