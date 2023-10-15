@@ -114,9 +114,9 @@ def get_dealer_details(request, dealer_id):
 
 # Create a `add_review` view to submit a review
 def add_review(request, dealer_id):
-    if request.method=='GET':
+    # if request.method=='GET':
         
-    elif request.method=='POST':
+    if request.method=='POST':
         if User.is_authenticated:
             review=dict()
             review["time"] = datetime.utcnow().isoformat()

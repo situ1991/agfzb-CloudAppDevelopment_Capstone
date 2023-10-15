@@ -13,7 +13,7 @@ def get_request(url, **kwargs):
     try:
         if api_key:
         # Call get method of requests library with URL and parameters
-        response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
+            response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
                                     auth=HTTPBasicAuth('apikey', api_key))
         else:
             response = requests.get(url, params=params)
