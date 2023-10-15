@@ -11,9 +11,12 @@ def get_request(url, **kwargs):
     print(kwargs)
     print("GET from {} ".format(url))
     try:
+        if api_key:
         # Call get method of requests library with URL and parameters
-        response = requests.get(url, headers={'Content-Type': 'application/json'},
-                                    params=kwargs)
+        response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
+                                    auth=HTTPBasicAuth('apikey', api_key))
+        else:
+            response = requests.get(url, params=params)
     except:
         # If any error occurs
         print("Network exception occurred")
@@ -24,6 +27,14 @@ def get_request(url, **kwargs):
 
 # Create a `post_request` to make HTTP POST requests
 # e.g., response = requests.post(url, params=kwargs, json=payload)
+def post_request(url, json_payload, **kwargs):
+    print(kwargs)
+    print("POST to {} ".format(url))
+    try:
+        response= requests.post(url, params=kwargs, json=json_payload)
+    except:
+        print("Network exception occurred")
+    return response
 
 
 # Create a get_dealers_from_cf method to get dealers from a cloud function
@@ -70,7 +81,10 @@ def get_dealer_reviews_from_cf(url,**kwargs):
             review_obj = DealerReview(id=review_doc["id"], name=review_doc["name"], dealership=review_doc["dealership"],
                                    review=review_doc["review"], purchase=review_doc["purchase"], purchase_date=review_doc["purchase_date"],
                                    car_make=review_doc["car_make"],
-                                   car_model=review_doc["car_model"], car_year=review_doc["car_year"])
+                                   car_model=review_doc["car_model"], 
+                                   car_year=review_doc["car_year"],
+                                   )
+            review_obj.sentiment = analyze_review_sentiments(review_obj.review)
             results.append(review_obj)
 
     return results
@@ -80,6 +94,17 @@ def get_dealer_reviews_from_cf(url,**kwargs):
 # def analyze_review_sentiments(text):
 # - Call get_request() with specified arguments
 # - Get the returned sentiment label such as Positive or Negative
+
+def analyze_review_sentiments(text):
+  params = dict()
+  params["text"] = kwargs["text"]
+  params["version"] = kwargs["version"]
+  params["features"] = kwargs["features"]
+  params["return_analyzed_text"] = kwargs["return_analyzed_text"]
+  response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
+                                    auth=HTTPBasicAuth('apikey', api_key))
+ 
+
 
 
 
