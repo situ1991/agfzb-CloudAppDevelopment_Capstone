@@ -85,39 +85,47 @@ def registration_request(request):
 
 # Update the `get_dealerships` view to render the index page with a list of dealerships
 def get_dealerships(request):
+    context=dict()
     if request.method == "GET":
         url = "https://us-south.functions.appdomain.cloud/api/v1/web/274a5e38-067d-4b29-9c70-80e084b095db/default/get_dealerships"
         # Get dealers from the URL
         dealerships = get_dealers_from_cf(url)
+
+        
+        context['dealership_list']=dealerships 
         # Concat all dealer's short name
         dealer_names = ' '.join([dealer.short_name for dealer in dealerships])
         # Return a list of dealer short name
-        return HttpResponse(dealer_names)
+        return render(request, 'djangoapp/index.html', context)
 
 # Create a `get_dealer_details` view to render the reviews of a dealer
 def get_dealer_details(request, dealer_id):
+    context=dict()
      if request.method == "GET":
         url = "https://us-south.functions.appdomain.cloud/api/v1/web/274a5e38-067d-4b29-9c70-80e084b095db/default/get_dealerships"
         # Get dealers from the URL
         dealer_reviews = get_dealer_reviews_from_cf(url)
+        context['reviews_list']=dealer_reviews
         # Concat all dealer's short name
         reviews = ' '.join([rev.review for rev in dealer_reviews])
         # Return a list of dealer short name
-        return HttpResponse(reviews)
+        render(request, 'djangoapp/dealer_details.html', context)
 
 
 # Create a `add_review` view to submit a review
 def add_review(request, dealer_id):
-    if User.is_authenticated:
-        review=dict()
-        review["time"] = datetime.utcnow().isoformat()
-        review["dealership"] = 11
-        review["review"] = "This is a great car dealer"
-        json_payload=dict()
-        json_payload["review"] = review
-        response=post_request(url, json_payload, dealerId=dealer_id)
-
-        return HttpResponse(response)
+    if request.method=='GET':
+        
+    elif request.method=='POST':
+        if User.is_authenticated:
+            review=dict()
+            review["time"] = datetime.utcnow().isoformat()
+            review["dealership"] = 11
+            review["review"] = "This is a great car dealer"
+            json_payload=dict()
+            json_payload["review"] = review
+            response=post_request(url, json_payload, dealerId=dealer_id)
+            return redirect("djangoapp:dealer_details", dealer_id=dealer_id)
 
 
 

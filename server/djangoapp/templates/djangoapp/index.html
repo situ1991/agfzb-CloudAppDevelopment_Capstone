@@ -43,34 +43,28 @@
             </ul>
         </div>
     </nav>
-    <table class="table">
+    <table class="table" id="table" data-filter-control="true">
         <thead>
           <tr>
-            <th scope="col">#</th>
-            <th scope="col">First Name</th>
-            <th scope="col">Last Name</th>
-            <th scope="col">Review</th>
+            <th data-field="id">ID</th>
+            <th data-field="full_name">Dealer Name</th>
+            <th data-field="city">City</th>
+            <th data-field="address">Address</th>
+            <th data-field="zip">Zip</th>
+            <th data-field="state" data-filter-control="select">State</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>Very Nice </td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>Good !</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>Happy with The Service</td>
-          </tr>
+            {% for dealer in dealership_list %}
+            <tr>
+                <td>{{dealer.id}}</td>
+                <td><a href="{% url 'djangoapp:dealer_details' dealer.id %}">{{dealer.full_name}}</a></td>
+                <td>{{dealer.city}}</td>
+                <td>{{dealer.address}}</td>
+                <td>{{dealer.zip}}</td>
+                <td>{{dealer.state}}</td>
+            </tr>
+           {% endfor %}          
         </tbody>
       </table>
     <footer class="bg-light text-center text-white">
@@ -80,5 +74,10 @@
           </div>
     </footer>
     </body>
+    <script>
+    $(function() {
+        $('#table').bootstrapTable()
+      })
+      </script>
 
 </html>
